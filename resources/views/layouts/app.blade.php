@@ -18,6 +18,9 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        input[type="checkbox"]:checked + span { background: #fc0; }
+    </style>
 </head>
 <body>
     <div id="app">

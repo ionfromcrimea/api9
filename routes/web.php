@@ -20,3 +20,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//Route::post('/tokens/create', function (Request $request) {
+//    dd($request);
+//    $token = auth()->user()->createToken($request->token_name, ['12345','67890']);
+
+//    return ['token' => $token->plainTextToken];
+//})->name('create-token');
+
+Route::post('/tokens/create', [App\Http\Controllers\Api\AuthController::class, 'createNewTokenForActiveUser'])->name('create-token');
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});

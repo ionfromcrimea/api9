@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Right;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $rights = Right::all();
+        return view('home', compact('rights'));
     }
 }
