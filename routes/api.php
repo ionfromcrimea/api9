@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -25,7 +29,7 @@ Route::middleware('auth:sanctum')->get('/name', function (Request $request) {
     return response()->json(['name' => $request->user()->name]);
 });
 
-Route::get('user/{id}', function (Request $request, $id){
+Route::get('user/{id}', function (Request $request, $id){ //dd('444');
     $user = \App\Models\User::find($id);
     if(!$user) return response('', 404);
     return $user;
