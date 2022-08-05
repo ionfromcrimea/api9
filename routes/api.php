@@ -34,3 +34,13 @@ Route::get('user/{id}', function (Request $request, $id){ //dd('444');
     if(!$user) return response('', 404);
     return $user;
 });
+
+
+Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    // Authors
+    Route::get('/authors/{author}', ['\App\Http\Controllers\AuthorsController', 'show']);
+});
