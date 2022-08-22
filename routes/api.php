@@ -42,5 +42,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     });
 
     // Authors
-    Route::get('/authors/{author}', ['\App\Http\Controllers\AuthorsController', 'show']);
+//    Route::get('/authors', ['\App\Http\Controllers\AuthorsController', 'index']);
+//    Route::get('/authors/{author}', ['\App\Http\Controllers\AuthorsController', 'show']);
+    Route::apiResource('authors', '\App\Http\Controllers\AuthorsController');
 });

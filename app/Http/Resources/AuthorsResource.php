@@ -15,7 +15,7 @@ class AuthorsResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'data' => [
+//            'data' => [
                 'id' => (string)$this->id,
                 'type' => 'authors',
                 'attributes' => [
@@ -23,7 +23,7 @@ class AuthorsResource extends JsonResource
                     'created_at' => $this->created_at,
                     'updated_at' => $this->updated_at,
                 ]
-            ]
+//            ]
         ];
     }
 }

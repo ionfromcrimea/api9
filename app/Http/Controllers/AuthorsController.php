@@ -6,28 +6,36 @@ use App\Http\Resources\AuthorsResource;
 use App\Models\Author;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
+use Illuminate\Http\Request;
 
 class AuthorsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
-        //
+        $authors = Author::all();
+        return AuthorsResource::collection($authors);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreAuthorRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreAuthorRequest $request)
+//    public function store(Request $request)
     {
-        //
+        $author = Author::create([
+            'name' => $request->input('data.attributes.name'),
+        ]);
+        return (new AuthorsResource($author))
+            ->response()
+            ->header('Location', route('authors.show', ['author' => $author]));
     }
 
     /**
@@ -46,11 +54,13 @@ class AuthorsController extends Controller
      *
      * @param  \App\Http\Requests\UpdateAuthorRequest  $request
      * @param  \App\Models\Author  $author
-     * @return \Illuminate\Http\Response
+     * @return AuthorsResource
      */
     public function update(UpdateAuthorRequest $request, Author $author)
+//    public function update(Request $request, Author $author)
     {
-        //
+        $author->update($request->input('data.attributes'));
+        return new AuthorsResource($author);
     }
 
     /**
@@ -61,6 +71,7 @@ class AuthorsController extends Controller
      */
     public function destroy(Author $author)
     {
-        //
+        $author->delete();
+        return response(null, 204);
     }
 }
