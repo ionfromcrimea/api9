@@ -2,29 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AuthorsCollection;
 use App\Http\Resources\AuthorsResource;
 use App\Models\Author;
 use App\Http\Requests\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
 use Illuminate\Http\Request;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class AuthorsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AuthorsCollection
      */
     public function index()
     {
-        $authors = Author::all();
-        return AuthorsResource::collection($authors);
+//        $authors = Author::all();
+//        return AuthorsResource::collection($authors);
+        $authors = QueryBuilder::for(Author::class)->allowedSorts([
+            'name',
+            'created_at',
+            'updated_at',
+//        ])->jsonPaginate()->get();
+        ])->jsonPaginate();
+        return new AuthorsCollection($authors);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreAuthorRequest  $request
+     * @param \App\Http\Requests\StoreAuthorRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreAuthorRequest $request)
@@ -41,7 +50,7 @@ class AuthorsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Author  $author
+     * @param \App\Models\Author $author
      * @return AuthorsResource
      */
     public function show(Author $author)
@@ -52,8 +61,8 @@ class AuthorsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateAuthorRequest  $request
-     * @param  \App\Models\Author  $author
+     * @param \App\Http\Requests\UpdateAuthorRequest $request
+     * @param \App\Models\Author $author
      * @return AuthorsResource
      */
     public function update(UpdateAuthorRequest $request, Author $author)
@@ -66,7 +75,7 @@ class AuthorsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Author  $author
+     * @param \App\Models\Author $author
      * @return \Illuminate\Http\Response
      */
     public function destroy(Author $author)
