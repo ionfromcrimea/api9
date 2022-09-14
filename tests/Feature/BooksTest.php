@@ -900,4 +900,410 @@ class BooksTest extends TestCase
                 ]
             ]);
     }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function it_can_update_an_book_from_a_resource_object()
+    {
+        $book = Book::factory()->create();
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $this->patchJson('/api/v1/books/1', [
+            'data' => [
+                'id' => '1',
+                'type' => 'books',
+                'attributes' => [
+                    'title' => 'Building an API with Laravel',
+                    'description' => 'A book about API development',
+                    'publication_year' => '2019',
+                ]
+            ]
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])
+            ->assertStatus(200)
+            ->assertJson([
+                "data" => [
+                    "id" => '1',
+                    "type" => "books",
+                    "attributes" => [
+                        'title' => 'Building an API with Laravel',
+                        'description' => 'A book about API development',
+                        'publication_year' => '2019',
+                        'created_at' => now()->setMilliseconds(0)->toJSON(),
+                        'updated_at' => now()->setMilliseconds(0)->toJSON(),
+                    ]
+                ]
+            ]);
+        $this->assertDatabaseHas('books', [
+            'id' => 1,
+            'title' => 'Building an API with Laravel',
+            'description' => 'A book about API development',
+            'publication_year' => '2019',
+        ]);
+    }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function it_validates_that_an_id_member_is_given_when_updating_an_book()
+    {
+        $book = Book::factory()->create();
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $this->patchJson('/api/v1/books/1', [
+            'data' => [
+                'type' => 'books',
+                'attributes' => [
+                    'title' => 'Building an API with Laravel',
+                    'description' => 'A book about API development',
+                    'publication_year' => '2019',
+                ]
+            ]
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])
+            ->assertStatus(422)
+            ->assertJson([
+                'errors' => [
+                    [
+                        'title' => 'Validation Error',
+//                        'details' => 'The data.id field is required.',
+                        'details' => 'Поле data.id обязательно для заполнения.',
+                        'source' => [
+                            'pointer' => '/data/id',
+                        ]
+                    ]
+                ]
+            ]);
+        $this->assertDatabaseHas('books', [
+            'id' => 1,
+            'title' => $book->title,
+        ]);
+    }
+
+
+    /**
+     * @test
+     * @watch
+     */
+    public function it_validates_that_an_id_member_is_a_string_when_updating_an_book()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $book = Book::factory()->create();
+        $this->patchJson('/api/v1/books/1', [
+            'data' => [
+                'id' => 1,
+                'type' => 'books',
+                'attributes' => [
+                    'title' => 'Building an API with Laravel',
+                    'description' => 'A book about API development',
+                    'publication_year' => '2019',
+                ]
+            ]
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])
+            ->assertStatus(422)
+            ->assertJson([
+                'errors' => [
+                    [
+                        'title' => 'Validation Error',
+//                        'details' => 'The data.id must be a string.',
+                        'details' => 'Значение поля data.id должно быть строкой.',
+                        'source' => [
+                            'pointer' => '/data/id',
+                        ]
+                    ]
+                ]
+            ]);
+        $this->assertDatabaseHas('books', [
+            'id' => 1,
+            'title' => $book->title,
+        ]);
+    }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function it_validates_that_the_type_member_is_given_when_updating_an_book()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $book = Book::factory()->create();
+        $this->patchJson('/api/v1/books/1', [
+            'data' => [
+                'id' => '1',
+                'attributes' => [
+                    'title' => 'Building an API with Laravel',
+                    'description' => 'A book about API development',
+                    'publication_year' => '2019',
+                ]
+            ]
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])
+            ->assertStatus(422)
+            ->assertJson([
+                'errors' => [
+                    [
+                        'title' => 'Validation Error',
+//                        'details' => 'The data.type field is required.',
+                        'details' => 'Поле data.type обязательно для заполнения.',
+                        'source' => [
+                            'pointer' => '/data/type',
+                        ]
+                    ]
+                ]
+            ]);
+        $this->assertDatabaseHas('books', [
+            'id' => 1,
+            'title' => $book->title,
+        ]);
+    }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function it_validates_that_the_type_member_has_the_value_of_books_when_updating_an_book()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $book = Book::factory()->create();
+        $this->patchJson('/api/v1/books/1', [
+            'data' => [
+                'id' => '1',
+                'type' => 'booo',
+                'attributes' => [
+                    'title' => 'Building an API with Laravel',
+                    'description' => 'A book about API development',
+                    'publication_year' => '2019',
+                ]
+            ]
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])
+            ->assertStatus(422)
+            ->assertJson([
+                'errors' => [
+                    [
+                        'title' => 'Validation Error',
+//                        'details' => 'The selected data.type is invalid.',
+                        'details' => 'Выбранное значение для data.type некорректно.',
+                        'source' => [
+                            'pointer' => '/data/type',
+                        ]
+                    ]
+                ]
+            ]);
+        $this->assertDatabaseHas('books', [
+            'id' => 1,
+            'title' => $book->title,
+        ]);
+    }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function it_validates_that_the_attributes_member_has_been_given_when_updating_an_book()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $book = Book::factory()->create();
+        $this->patchJson('/api/v1/books/1', [
+            'data' => [
+                'id' => '1',
+                'type' => 'books',
+            ]
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])
+            ->assertStatus(422)
+            ->assertJson([
+                'errors' => [
+                    [
+                        'title' => 'Validation Error',
+//                        'details' => 'The data.attributes field is required.',
+                        'details' => 'Поле data.attributes обязательно для заполнения.',
+                        'source' => [
+                            'pointer' => '/data/attributes',
+                        ]
+                    ]
+                ]
+            ]);
+        $this->assertDatabaseHas('books', [
+            'id' => 1,
+            'title' => $book->title,
+        ]);
+    }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function it_validates_that_the_attributes_member_is_an_object_given_when_updating_an_book()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $book = Book::factory()->create();
+        $this->patchJson('/api/v1/books/1', [
+            'data' => [
+                'id' => '1',
+                'type' => 'books',
+                'attributes' => 'this is not an object'
+            ]
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])
+            ->assertStatus(422)
+            ->assertJson([
+                'errors' => [
+                    [
+                        'title' => 'Validation Error',
+//                        'details' => 'The data.attributes must be an array.',
+                        'details' => 'Значение поля data.attributes должно быть массивом.',
+                        'source' => [
+                            'pointer' => '/data/attributes',
+                        ]
+                    ]
+                ]
+            ]);
+        $this->assertDatabaseHas('books', [
+            'id' => 1,
+            'title' => $book->title,
+        ]);
+    }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function it_validates_that_a_title_attribute_is_a_string_when_updating_an_book()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $book = Book::factory()->create();
+        $this->patchJson('/api/v1/books/1', [
+            'data' => [
+                'id' => '1',
+                'type' => 'books',
+                'attributes' => [
+                    'title' => 42,
+                ]
+            ]
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])
+            ->assertStatus(422)
+            ->assertJson([
+                'errors' => [
+                    [
+                        'title' => 'Validation Error',
+                        'details' => 'Значение поля data.attributes.title должно быть строкой.',
+                        'source' => [
+                            'pointer' => '/data/attributes/title',
+                        ]
+                    ]
+                ]
+            ]);
+        $this->assertDatabaseHas('books', [
+            'id' => 1,
+            'title' => $book->title,
+        ]);
+    }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function it_validates_that_a_description_attribute_is_a_string_when_updating_an_book()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $book = Book::factory()->create();
+        $this->patchJson('/api/v1/books/1', [
+            'data' => [
+                'id' => '1',
+                'type' => 'books',
+                'attributes' => [
+                    'description' => 42,
+                ]
+            ]
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])
+            ->assertStatus(422)
+            ->assertJson([
+                'errors' => [
+                    [
+                        'title' => 'Validation Error',
+//                        'details' => 'The data.attributes.description must be a string.',
+                        'details' => 'Значение поля data.attributes.description должно быть строкой.',
+                        'source' => [
+                            'pointer' => '/data/attributes/description',
+                        ]
+                    ]
+                ]
+            ]);
+        $this->assertDatabaseHas('books', [
+            'id' => 1,
+            'title' => $book->title,
+        ]);
+    }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function it_validates_that_a_publication_year_attribute_is_a_string_when_updating_an_book()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $book = Book::factory()->create();
+        $this->patchJson('/api/v1/books/1', [
+            'data' => [
+                'id' => '1',
+                'type' => 'books',
+                'attributes' => [
+                    'publication_year' => 2019,
+                ]
+            ]
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])
+            ->assertStatus(422)
+            ->assertJson([
+                'errors' => [
+                    [
+                        'title' => 'Validation Error',
+//                        'details' => 'The data.attributes.publication_year must be a string.',
+                        'details' => 'Значение поля data.attributes.publication year должно быть строкой.',
+                        'source' => [
+                            'pointer' => '/data/attributes/publication_year',
+                        ]
+                    ]
+                ]
+            ]);
+        $this->assertDatabaseHas('books', [
+            'id' => 1,
+            'title' => $book->title,
+        ]);
+    }
 }

@@ -87,11 +87,12 @@ class BooksController extends Controller
      *
      * @param \App\Http\Requests\UpdateBookRequest $request
      * @param \App\Models\Book $book
-     * @return \Illuminate\Http\Response
+     * @return BooksResource
      */
     public function update(UpdateBookRequest $request, Book $book)
     {
-        //
+        $book->update($request->input('data.attributes'));
+        return new BooksResource($book);
     }
 
     /**
