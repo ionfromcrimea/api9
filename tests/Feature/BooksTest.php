@@ -1306,4 +1306,23 @@ class BooksTest extends TestCase
             'title' => $book->title,
         ]);
     }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function it_can_delete_an_book_through_a_delete_request()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $book = Book::factory()->create();
+        $this->delete('/api/v1/books/1', [], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])->assertStatus(204);
+        $this->assertDatabaseMissing('books', [
+            'id' => 1,
+            'title' => $book->title,
+        ]);
+    }
 }

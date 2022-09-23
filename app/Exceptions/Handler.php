@@ -3,10 +3,12 @@
 namespace App\Exceptions;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\AuthenticationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 //use Exception;
@@ -61,6 +63,9 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
+        if($exception instanceof QueryException){
+            $exception = new NotFoundHttpException('Resource not found');
+        }
         return parent::render($request, $exception);
     }
 
@@ -69,8 +74,7 @@ class Handler extends ExceptionHandler
         return response()->json([
             'errors' => [
                 [
-                    'title' => Str::title(Str::snake(class_basename(
-                        $e), ' ')),
+                    'title' => Str::title(Str::snake(class_basename($e), ' ')),
                     'details' => $e->getMessage(),
                 ]
             ]

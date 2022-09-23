@@ -15,4 +15,8 @@ class Book extends Model
         'publication_year'
         ];
 
+    public function authors(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Author::class);
+    }
 }

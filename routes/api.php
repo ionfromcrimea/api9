@@ -29,9 +29,9 @@ Route::middleware('auth:sanctum')->get('/name', function (Request $request) {
     return response()->json(['name' => $request->user()->name]);
 });
 
-Route::get('user/{id}', function (Request $request, $id){ //dd('444');
+Route::get('user/{id}', function (Request $request, $id) { //dd('444');
     $user = \App\Models\User::find($id);
-    if(!$user) return response('', 404);
+    if (!$user) return response('', 404);
     return $user;
 });
 
@@ -47,4 +47,10 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::apiResource('authors', '\App\Http\Controllers\AuthorsController');
     // Books
     Route::apiResource('books', '\App\Http\Controllers\BooksController');
+    Route::get('books/{book}/relationships/authors', '\App\Http\Controllers\BooksAuthorsRelationshipsController@index')
+        ->name('books.relationships.authors');
+    Route::patch('books/{book}/relationships/authors', '\App\Http\Controllers\BooksAuthorsRelationshipsController@update')
+        ->name('books.relationships.authors');
+    Route::get('books/{book}/authors', '\App\Http\Controllers\BooksAuthorsRelatedController@index')
+        ->name('books.authors');
 });

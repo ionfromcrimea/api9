@@ -21,7 +21,9 @@ class BooksController extends Controller
     {
 //        $books = Book::all();
 //        return new BooksCollection($books);
-        $books = QueryBuilder::for(Book::class)->allowedSorts([
+        $books = QueryBuilder::for(Book::class)
+            ->allowedIncludes('authors')
+            ->allowedSorts([
             'title',
             'publication_year',
             'created_at',
@@ -66,9 +68,13 @@ class BooksController extends Controller
      * @param \App\Models\Book $book
      * @return BooksResource
      */
-    public function show(Book $book)
+//    public function show(Book $book)
+    public function show($book)
     {
-        return new BooksResource($book);
+        $query = QueryBuilder::for(Book::where('id', $book))
+            ->allowedIncludes('authors')
+            ->firstOrFail();
+        return new BooksResource($query);
     }
 
     /**
@@ -103,6 +109,7 @@ class BooksController extends Controller
      */
     public function destroy(Book $book)
     {
-        //
+        $book->delete();
+        return response(null, 204);
     }
 }

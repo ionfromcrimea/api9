@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Http\Resources\MissingValue;
 
 class BooksCollection extends ResourceCollection
 {
@@ -17,6 +18,19 @@ class BooksCollection extends ResourceCollection
 //        return parent::toArray($request);
         return [
             'data' => $this->collection,
+            'included' => $this->mergeIncludedRelations($request),
         ];
+    }
+
+    private function mergeIncludedRelations($request)
+    {
+//        return $includes;
+
+//        $includes = $this->collection->flatMap(function ($resource) use ($request) {
+//            return $resource->included($request);
+//        })->unique()->values();
+        $includes = $this->collection->flatMap->included($request)->unique()->values();
+
+        return $includes->isNotEmpty() ? $includes : new MissingValue();
     }
 }
