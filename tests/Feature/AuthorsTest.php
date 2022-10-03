@@ -124,8 +124,8 @@ class AuthorsTest extends TestCase
                     "type" => "authors",
                     "attributes" => [
                         'name' => 'John Doe',
-                        'created_at' => now()->setMilliseconds(0)->toJSON(),
-                        'updated_at' => now()->setMilliseconds(0)->toJSON(),
+//                        'created_at' => now()->setMilliseconds(0)->toJSON(),
+//                        'updated_at' => now()->setMilliseconds(0)->toJSON(),
                     ]
                 ]
             ])
@@ -390,8 +390,8 @@ class AuthorsTest extends TestCase
                     'type' => 'authors',
                     'attributes' => [
                         'name' => 'Jane Doe',
-                        'created_at' => $creationTimestamp->setMilliseconds(0)->toJSON(),
-                        'updated_at' => now()->setMilliseconds(0)->toJSON(),
+//                        'created_at' => $creationTimestamp->setMilliseconds(0)->toJSON(),
+//                        'updated_at' => now()->setMilliseconds(0)->toJSON(),
                     ],
                 ]
             ]);

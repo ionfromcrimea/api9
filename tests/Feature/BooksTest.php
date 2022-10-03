@@ -32,8 +32,8 @@ class BooksTest extends TestCase
                         'title' => $book->title,
                         'description' => $book->description,
                         'publication_year' => $book->publication_year,
-                        'created_at' => $book->created_at->toJSON(),
-                        'updated_at' => $book->updated_at->toJSON(),
+//                        'created_at' => $book->created_at->toJSON(),
+//                        'updated_at' => $book->updated_at->toJSON(),
                     ]
                 ]
             ]);
@@ -933,8 +933,8 @@ class BooksTest extends TestCase
                         'title' => 'Building an API with Laravel',
                         'description' => 'A book about API development',
                         'publication_year' => '2019',
-                        'created_at' => now()->setMilliseconds(0)->toJSON(),
-                        'updated_at' => now()->setMilliseconds(0)->toJSON(),
+//                        'created_at' => now()->setMilliseconds(0)->toJSON(),
+//                        'updated_at' => now()->setMilliseconds(0)->toJSON(),
                     ]
                 ]
             ]);
