@@ -75,4 +75,9 @@ class JSONAPIService
         $model->$relationship()->sync($ids);
         return response(null, 204);
     }
+
+    public function fetchRelated($model, $relationship)
+    {
+        return new JSONAPICollection($model->$relationship);
+    }
 }

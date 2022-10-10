@@ -37,7 +37,9 @@ Route::get('user/{id}', function (Request $request, $id) { //dd('444');
 
 
 Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
-    Route::get('/user', function (Request $request) {
+    // Users
+    Route::apiResource('users', '\App\Http\Controllers\UsersController');
+    Route::get('/users/current', function (Request $request) {
         return $request->user();
     });
 
@@ -45,6 +47,13 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
 //    Route::get('/authors', ['\App\Http\Controllers\AuthorsController', 'index']);
 //    Route::get('/authors/{author}', ['\App\Http\Controllers\AuthorsController', 'show']);
     Route::apiResource('authors', '\App\Http\Controllers\AuthorsController');
+    Route::get('authors/{author}/relationships/books', '\App\Http\Controllers\AuthorsBooksRelationshipsController@index')
+        ->name('authors.relationships.books');
+    Route::patch('authors/{author}/relationships/books', '\App\Http\Controllers\AuthorsBooksRelationshipsController@update')
+        ->name('authors.relationships.books');
+    Route::get('authors/{author}/books', '\App\Http\Controllers\AuthorsBooksRelatedController@index')
+        ->name('authors.books');
+
     // Books
     Route::apiResource('books', '\App\Http\Controllers\BooksController');
     Route::get('books/{book}/relationships/authors', '\App\Http\Controllers\BooksAuthorsRelationshipsController@index')

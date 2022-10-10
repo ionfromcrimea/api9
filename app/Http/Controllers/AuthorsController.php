@@ -69,11 +69,13 @@ class AuthorsController extends Controller
      * @param \App\Models\Author $author
      * @return JSONAPIResource
      */
-    public function show(Author $author)
+//    public function show(Author $author)
+    public function show($author)
     {
 //        return new AuthorsResource($author);
 //        return new JSONAPIResource($author);
-        return $this->service->fetchResource($author);
+//        return $this->service->fetchResource($author);
+        return $this->service->fetchResource(Author::class, $author, 'authors');
     }
 
     /**
