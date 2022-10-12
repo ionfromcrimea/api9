@@ -62,4 +62,8 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
         ->name('books.relationships.authors');
     Route::get('books/{book}/authors', '\App\Http\Controllers\BooksAuthorsRelatedController@index')
         ->name('books.authors');
+
+    //Comments
+    Route::apiResource('comments', '\App\Http\Controllers\CommentsController');
+
 });

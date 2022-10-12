@@ -76,6 +76,22 @@ return [
             ],
             'relationships' => [
             ]
+        ],
+        'comments' => [
+            'allowedSorts' => [
+                'created_at'
+            ],
+            'allowedIncludes' => [],
+            'validationRules' => [
+                'create' => [
+                    'data.attributes.message' => 'required|string',
+                ],
+                'update' => [
+                    'data.attributes.message' => 'sometimes|required|string',
+                ]
+            ],
+            'relationships' => [
+            ]
         ]
     ]
 ];

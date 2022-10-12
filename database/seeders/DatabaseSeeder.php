@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             UsersSeeder::class,
             AuthorsSeeder::class,
             BooksSeeder::class,
-//            CommentSeeder::class,
+//            CommentsSeeder::class,
         ]);
 
         //         \App\Models\Author::factory(10)->create();
