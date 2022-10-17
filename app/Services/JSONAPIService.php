@@ -70,6 +70,20 @@ class JSONAPIService
         return JSONAPIIdentifierResource::collection($model->$relationship);
     }
 
+    public function updateToManyRelationships($model, $relationship, $ids)
+    { // описание метода - на страницах 591-592
+        $foreignKey = $model->$relationship()->getForeignKeyName();
+        $relatedModel = $model->$relationship()->getRelated();
+        $relatedModel->newQuery()->findOrFail($ids);
+        $relatedModel->newQuery()->where($foreignKey, $model->id)->update([
+            $foreignKey => null,
+        ]);
+        $relatedModel->newQuery()->whereIn('id', $ids)->update([
+            $foreignKey => $model->id,
+        ]);
+        return response(null, 204);
+    }
+
     public function updateManyToManyRelationships($model, $relationship, $ids)
     {
         $model->$relationship()->sync($ids);

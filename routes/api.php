@@ -39,6 +39,12 @@ Route::get('user/{id}', function (Request $request, $id) { //dd('444');
 Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     // Users
     Route::apiResource('users', '\App\Http\Controllers\UsersController');
+    Route::get('users/{user}/relationships/comments', '\App\Http\Controllers\UsersCommentsRelationshipsController@index')
+        ->name('users.relationships.comments');
+    Route::patch('users/{user}/relationships/comments', '\App\Http\Controllers\UsersCommentsRelationshipsController@update')
+        ->name('users.relationships.comments');
+    Route::get('users/{user}/comments', '\App\Http\Controllers\UsersCommentsRelatedController@index')
+        ->name('users.comments');
     Route::get('/users/current', function (Request $request) {
         return $request->user();
     });

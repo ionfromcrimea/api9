@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Str;
@@ -63,7 +64,8 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
-        if($exception instanceof QueryException){
+        if ($exception instanceof QueryException || $exception instanceof
+            ModelNotFoundException) {
             $exception = new NotFoundHttpException('Resource not found');
         }
         return parent::render($request, $exception);

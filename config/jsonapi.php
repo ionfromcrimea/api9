@@ -61,7 +61,9 @@ return [
                 'name',
                 'email',
             ],
-            'allowedIncludes' => [],
+            'allowedIncludes' => [
+                'comments',
+            ],
             'validationRules' => [
                 'create' => [
                     'data.attributes.name' => 'required|string',
@@ -72,9 +74,14 @@ return [
                     'data.attributes.name' => 'sometimes|required|string',
                     'data.attributes.email' => 'sometimes|required|email',
                     'data.attributes.password' => 'sometimes|required|string',
-                ]
+                ],
             ],
             'relationships' => [
+                [
+                    'type' => 'comments',
+                    'method' => 'comments',
+                    'id' => 'user',
+                ],
             ]
         ],
         'comments' => [

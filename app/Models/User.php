@@ -74,4 +74,9 @@ class User extends Authenticatable
             'updated_at' => $this->updated_at,
         ]);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
