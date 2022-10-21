@@ -20,6 +20,11 @@ class Book extends AbstractAPIModel
         return $this->belongsToMany(Author::class);
     }
 
+    public function comments(): \Illuminate\Database\Eloquent\Relations\hasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     /**
      * @return string
      */

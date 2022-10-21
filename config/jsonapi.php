@@ -8,7 +8,7 @@ return [
                 'updated_at',
             ],
             'allowedIncludes' => [
-                'books'
+                'books',
             ],
             'validationRules' => [
                 'create' => [
@@ -34,7 +34,8 @@ return [
                 'updated_at',
             ],
             'allowedIncludes' => [
-                'authors'
+                'authors',
+                'comments',
             ],
             'validationRules' => [
                 'create' => [
@@ -53,7 +54,12 @@ return [
                     'type' => 'authors',
                     'method' => 'authors',
                     'id' => 'book',
-                ]
+                ],
+                [
+                    'type' => 'comments',
+                    'method' => 'comments',
+                    'id' => 'book',
+                ],
             ]
         ],
         'users' => [
@@ -88,7 +94,10 @@ return [
             'allowedSorts' => [
                 'created_at'
             ],
-            'allowedIncludes' => [],
+            'allowedIncludes' => [
+                'books',
+                'users',
+            ],
             'validationRules' => [
                 'create' => [
                     'data.attributes.message' => 'required|string',
@@ -98,6 +107,16 @@ return [
                 ]
             ],
             'relationships' => [
+                [
+                    'type' => 'books',
+                    'method' => 'books',
+                    'id' => 'comment',
+                ],
+                [
+                    'type' => 'users',
+                    'method' => 'users',
+                    'id' => 'comment',
+                ],
             ]
         ]
     ]

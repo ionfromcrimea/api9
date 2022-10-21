@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\MissingValue;
 
@@ -43,30 +45,34 @@ class JSONAPIResource extends JsonResource
                                 ["{$relationid}" => $this->id]
                             ),
                         ],
-                        'data' => !$this->whenLoaded($relationship)
-                            instanceof MissingValue ?
-                            JSONAPIIdentifierResource::collection($this->{$relationship}) : new MissingValue(),
+//                        'data' => !$this->whenLoaded($relationship)
+//                            instanceof MissingValue ?
+//                            JSONAPIIdentifierResource::collection($this->{$relationship}) : new MissingValue(),
+                        'data' => $this->prepareRelationshipData($relatedType, $relationship),
                     ],
                 ];
             });
         return $collection->count() > 0 ? $collection : new MissingValue();
     }
 
-    private function relations()
+    private function prepareRelationshipData($relatedType, $relationship)
     {
-        return collect(config("jsonapi.resources.{$this->type()}.relationships"))
-            ->map(function ($relation) {
-                return JSONAPIResource::collection($this->whenLoaded($relation['method']));
-            });
+        if ($this->whenLoaded($relationship) instanceof MissingValue) {
+            return new MissingValue();
+        }
+        if ($this->$relationship() instanceof BelongsTo) {
+            return new JSONAPIIdentifierResource($this->$relationship);
+        }
+        return JSONAPIIdentifierResource::collection($this->$relationship);
     }
 
-    public function included($request)
-    {
-        return collect($this->relations())
-            ->filter(function ($resource) {
-                return $resource->collection !== null;
-            })->flatMap->toArray($request);
-    }
+//    private function relations()
+//    {
+//        return collect(config("jsonapi.resources.{$this->type()}.relationships"))
+//            ->map(function ($relation) {
+//                return JSONAPIResource::collection($this->whenLoaded($relation['method']));
+//            });
+//    }
 
     public function with($request)
     {
@@ -78,5 +84,25 @@ class JSONAPIResource extends JsonResource
             $with['included'] = $this->included($request);
         }
         return $with;
+    }
+
+    public function included($request)
+    {
+        return collect($this->relations())
+            ->filter(function ($resource) {
+                return $resource->collection !== null;
+            })->flatMap->toArray($request);
+    }
+
+    private function relations()
+    {
+        return collect(config("jsonapi.resources.{$this->type()}.relationships"))
+            ->map(function ($relation) {
+                $modelOrCollection = $this->whenLoaded($relation['method']);
+                if ($modelOrCollection instanceof Model) {
+                    $modelOrCollection = collect([new JSONAPIResource($modelOrCollection)]);
+                }
+                return JSONAPIResource::collection($modelOrCollection);
+            });
     }
 }
