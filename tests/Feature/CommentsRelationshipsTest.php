@@ -588,6 +588,7 @@ class CommentsRelationshipsTest extends TestCase
     public function it_can_get_related_user_as_a_resource_object_from_related_link()
     {
         $this->withoutExceptionHandling();
+
         $user = User::factory()->create();
         $this->actingAs($user, 'sanctum');
 
@@ -1117,6 +1118,315 @@ class CommentsRelationshipsTest extends TestCase
                             'updated_at' => $user->updated_at->toJSON(),
                         ]
                     ]
+                ]
+            ]);
+    }
+
+
+    /**
+     * @test
+     * @watch
+     */
+    public function when_creating_a_comment_it_can_also_add_relationships_right_away()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $book = Book::factory()->create();
+        $this->postJson('/api/v1/comments', [
+            'data' => [
+                'type' => 'comments',
+                'attributes' => [
+                    'message' => 'Hello world',
+                ],
+                'relationships' => [
+                    'users' => [
+                        'data' => [
+                            'id' => $user->id,
+                            'type' => 'users',
+                        ]
+                    ],
+                    'books' => [
+                        'data' => [
+                            'id' => (string)$book->id,
+                            'type' => 'books',
+                        ]
+                    ]
+                ]
+            ]
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])
+            ->assertStatus(201)
+            ->assertJson([
+                "data" => [
+                    "id" => '1',
+                    "type" => 'comments',
+                    "attributes" => [
+                        'message' => 'Hello world',
+                        'created_at' => now()->setMilliseconds(0)->toJSON(),
+                        'updated_at' => now()->setMilliseconds(0)->toJSON(),
+                    ],
+                    'relationships' => [
+                        'books' => [
+                            'links' => [
+                                'self' => route(
+                                    'comments.relationships.books',
+                                    ['comment' => 1]
+                                ),
+                                'related' => route(
+                                    'comments.books',
+                                    ['comment' => 1]
+                                ),
+                            ],
+                            'data' => [
+                                'id' => $book->id,
+                                'type' => 'books',
+                            ]
+                        ],
+                        'users' => [
+                            'links' => [
+                                'self' => route(
+                                    'comments.relationships.users',
+                                    ['comment' => 1]
+                                ),
+                                'related' => route(
+                                    'comments.users',
+                                    ['comment' => 1]
+                                ),
+                            ],
+                            'data' => [
+                                'id' => $user->id,
+                                'type' => 'users',
+                            ]
+                        ]
+                    ]
+                ]
+            ])->assertHeader('Location', url('/api/v1/comments/1'));
+        $this->assertDatabaseHas('comments', [
+            'id' => 1,
+            'message' => 'Hello world',
+            'user_id' => $user->id,
+            'book_id' => $book->id,
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_validates_relationships_given_when_creating_comment()
+    {
+//        $this->withoutExceptionHandling();
+
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $book = Book::factory()->create();
+        $this->postJson('/api/v1/comments', [
+            'data' => [
+                'type' => 'comments',
+                'attributes' => [
+                    'message' => 'Hello world',
+                ],
+                'relationships' => [
+                    'users' => [],
+                    'books' => [
+                        'data' => [
+                            'id' => 1,
+                            'type' => 'random',
+                        ]
+                    ]
+                ]
+            ]
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])->assertStatus(422)->assertJson([
+            'errors' => [
+                [
+                    'title' => 'Validation Error',
+//                    'details' => 'The data.relationships.users.data field is required.',
+                    'details' => 'Поле data.relationships.users.data обязательно для заполнения.',
+                    'source' => [
+                        'pointer' => '/data/relationships/users/data',
+                    ]
+                ],
+                [
+                    'title' => 'Validation Error',
+//                    'details' => 'The data.relationships.books.data.id must be a string.',
+                    'details' => 'Значение поля data.relationships.books.data.id должно быть строкой.',
+                    'source' => [
+                        'pointer' => '/data/relationships/books/data/id',
+                    ]
+                ],
+                [
+                    'title' => 'Validation Error',
+//                    'details' => 'The selected data.relationships.books.data.type is invalid.',
+                    'details' => 'Выбранное значение для data.relationships.books.data.type некорректно.',
+                    'source' => [
+                        'pointer' => '/data/relationships/books/data/type',
+                    ]
+                ],
+            ]
+        ]);
+    }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function when_updating_a_comment_it_can_also_update_relationships()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $comment = Comment::factory()->make();
+        $user->comments()->save($comment);
+        $book = Book::factory()->create();
+        $book->comments()->save($comment);
+        $anotherUser = User::factory()->create();
+        $anotherBook = Book::factory()->create();
+        $this->patchJson('/api/v1/comments/1', [
+            'data' => [
+                'id' => (string)$comment->id,
+                'type' => 'comments',
+                'attributes' => [
+                    'message' => 'Hello world',
+                ],
+                'relationships' => [
+                    'users' => [
+                        'data' => [
+                            'id' => $anotherUser->id,
+                            'type' => 'users',
+                        ]
+                    ],
+                    'books' => [
+                        'data' => [
+                            'id' => (string)$anotherBook->id,
+                            'type' => 'books',
+                        ]
+                    ]
+                ]
+            ]
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])
+            ->assertStatus(200)
+            ->assertJson([
+                "data" => [
+                    "id" => '1',
+                    "type" => 'comments',
+                    "attributes" => [
+                        'message' => 'Hello world',
+                        'created_at' => now()->setMilliseconds(0)->toJSON(),
+                        'updated_at' => now()->setMilliseconds(0)->toJSON(),
+                    ],
+                    'relationships' => [
+                        'books' => [
+                            'links' => [
+                                'self' => route(
+                                    'comments.relationships.books',
+                                    ['comment' => 1]
+                                ),
+                                'related' => route(
+                                    'comments.books',
+                                    ['comment' => 1]
+                                ),
+                            ],
+                            'data' => [
+                                'id' => $anotherBook->id,
+                                'type' => 'books',
+                            ]
+                        ],
+                        'users' => [
+                            'links' => [
+                                'self' => route(
+                                    'comments.relationships.users',
+                                    ['comment' => 1]
+                                ),
+                                'related' => route(
+                                    'comments.users',
+                                    ['comment' => 1]
+                                ),
+                            ],
+                            'data' => [
+                                'id' => $anotherUser->id,
+                                'type' => 'users',
+                            ]
+                        ]
+                    ]
+                ]
+            ]);
+        $this->assertDatabaseHas('comments', [
+            'id' => 1,
+            'message' => 'Hello world',
+            'user_id' => $anotherUser->id,
+            'book_id' => $anotherBook->id,
+        ]);
+    }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function it_validates_relationships_given_when_updating_comment()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $comment = Comment::factory()->make();
+        $user->comments()->save($comment);
+        $book = Book::factory()->create();
+        $book->comments()->save($comment);
+        $this->patchJson('/api/v1/comments/1', [
+            'data' => [
+                'id' => (string)$comment->id,
+                'type' => 'comments',
+                'attributes' => [
+                    'message' => 'Hello world',
+                ],
+                'relationships' => [
+                    'users' => [],
+                    'books' => [
+                        'data' => [
+                            'id' => 1,
+                            'type' => 'random',
+                        ]
+                    ]
+                ]
+            ]
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])
+            ->assertStatus(422)->assertJson([
+                'errors' => [
+                    [
+                        'title' => 'Validation Error',
+//                        'details' => 'The data.relationships.users.data field is required.',
+                        'details' => 'Поле data.relationships.users.data обязательно для заполнения.',
+                        'source' => [
+                            'pointer' => '/data/relationships/users/data',
+                        ]
+                    ],
+                    [
+                        'title' => 'Validation Error',
+//                        'details' => 'The data.relationships.books.data.id must be a string.',
+                        'details' => 'Значение поля data.relationships.books.data.id должно быть строкой.',
+                        'source' => [
+                            'pointer' => '/data/relationships/books/data/id',
+                        ]
+                    ],
+                    [
+                        'title' => 'Validation Error',
+//                        'details' => 'The selected data.relationships.books.data.type is invalid.',
+                        'details' => 'Выбранное значение для data.relationships.books.data.type некорректно.',
+                        'source' => [
+                            'pointer' => '/data/relationships/books/data/type',
+                        ]
+                    ],
                 ]
             ]);
     }

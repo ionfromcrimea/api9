@@ -1451,4 +1451,87 @@ class BooksRelationshipsTest extends TestCase
             ]
         ]);
     }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function when_creating_a_book_it_can_also_add_relationships_right_away()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user, 'sanctum');
+        $authors = Author::factory(2)->create();
+        $this->postJson('/api/v1/books', [
+            'data' => [
+                'type' => 'books',
+                'attributes' => [
+                    'title' => 'Building an API with Laravel',
+                    'description' => 'A book about API development',
+                    'publication_year' => '2019',
+                ],
+                'relationships' => [
+                    'authors' => [
+                        'data' => [
+                            [
+                                'id' => (string)$authors[0]->id,
+                                'type' => 'authors',
+                            ],
+                            [
+                                'id' => (string)$authors[1]->id,
+                                'type' => 'authors',
+                            ],
+                        ]
+                    ]
+                ]
+            ]
+        ], [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])
+            ->assertStatus(201)
+            ->assertJson([
+                "data" => [
+                    "id" => '1',
+                    "type" => 'books',
+                    "attributes" => [
+                        'title' => 'Building an API with Laravel',
+                        'description' => 'A book about API development',
+                        'publication_year' => '2019',
+                        'created_at' => now()->setMilliseconds(0)->toJSON(),
+                        'updated_at' => now()->setMilliseconds(0)->toJSON(),
+                    ],
+                    'relationships' => [
+                        'authors' => [
+                            'links' => [
+                                'self' => route(
+                                    'books.relationships.authors',
+                                    ['book' => 1]
+                                ),
+                                'related' => route(
+                                    'books.authors',
+                                    ['book' => 1]
+                                ),
+                            ],
+                            'data' => [
+                                [
+                                    'id' => $authors->get(0)->id,
+                                    'type' => 'authors'
+                                ],
+                                [
+                                    'id' => $authors->get(1)->id,
+                                    'type' => 'authors'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ])->assertHeader('Location', url('/api/v1/books/1'));
+        $this->assertDatabaseHas('books', [
+            'id' => 1,
+            'title' => 'Building an API with Laravel',
+        ])->assertDatabaseHas('author_book', [
+            'book_id' => 1,
+            'author_id' => $authors[0]->id,
+        ]);
+    }
 }

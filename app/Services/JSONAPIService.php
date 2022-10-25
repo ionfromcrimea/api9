@@ -6,6 +6,8 @@ use App\Http\Resources\JSONAPICollection;
 use App\Http\Resources\JSONAPIIdentifierResource;
 use App\Http\Resources\JSONAPIResource;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -43,9 +45,27 @@ class JSONAPIService
         return new JSONAPICollection($models);
     }
 
-    public function createResource(string $modelClass, array $attributes)
+//    public function createResource(string $modelClass, array $attributes)
+//    {
+//        $model = $modelClass::create($attributes);
+//        return (new JSONAPIResource($model))
+//            ->response()
+//            ->header('Location', route("{$model->type()}.show", [
+//                Str::singular($model->type()) => $model,
+//            ]));
+//    }
+
+    public function createResource(string $modelClass, array $attributes, array $relationships = null)
     {
         $model = $modelClass::create($attributes);
+        if ($relationships) {
+//            foreach ($relationships as $relationshipName => $contents) {
+//                $this->updateToOneRelationship($model, $relationshipName, $contents['data']['id']);
+//            }
+//        }
+//        $model->load(array_keys($relationships));
+            $this->handleRelationship($relationships, $model);
+        }
         return (new JSONAPIResource($model))
             ->response()
             ->header('Location', route("{$model->type()}.show", [
@@ -53,9 +73,39 @@ class JSONAPIService
             ]));
     }
 
-    public function updateResource($model, $attributes)
+//    protected function handleRelationship(array $relationships, $model): void
+//    {
+//        foreach ($relationships as $relationshipName => $contents) {
+//            $this->updateToOneRelationship($model, $relationshipName, $contents['data']['id']);
+//        }
+//        $model->load(array_keys($relationships));
+//    }
+
+    protected function handleRelationship(array $relationships, $model) : void
+    {
+        foreach ($relationships as $relationshipName => $contents) {
+            if ($model->$relationshipName() instanceof BelongsTo) {
+                $this->updateToOneRelationship($model, $relationshipName, $contents['data']['id']);
+            }
+            if($model->$relationshipName() instanceof BelongsToMany){
+                $this->updateManyToManyRelationships($model, $relationshipName, collect($contents['data'])->pluck('id'));
+            }
+        }
+        $model->load(array_keys($relationships));
+    }
+
+//    public function updateResource($model, $attributes)
+//    {
+//        $model->update($attributes);
+//        return new JSONAPIResource($model);
+//    }
+
+    public function updateResource($model, $attributes, $relationships = null)
     {
         $model->update($attributes);
+        if ($relationships) {
+            $this->handleRelationship($relationships, $model);
+        }
         return new JSONAPIResource($model);
     }
 

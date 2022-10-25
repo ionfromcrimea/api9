@@ -72,7 +72,9 @@ class BooksController extends Controller
 //            ->header('Location', route('books.show', [
 //                'book' => $book,
 //            ]));
-        return $this->service->createResource(Book::class, $request->input('data.attributes'));
+//        return $this->service->createResource(Book::class, $request->input('data.attributes'));
+        return $this->service->createResource(Book::class, $request->input('data.attributes'),
+            $request->input('data.relationships'));
     }
 
     /**
