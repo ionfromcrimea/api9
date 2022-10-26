@@ -112,11 +112,16 @@ class BooksController extends Controller
      * @param \App\Models\Book $book
      * @return JSONAPIResource
      */
-    public function update(JSONAPIRequest $request, Book $book)
-    {
+//    public function update(JSONAPIRequest $request, Book $book)
+//    {
 //        $book->update($request->input('data.attributes'));
 //        return new JSONAPIResource($book);
-        return $this->service->updateResource($book, $request->input('data.attributes'));
+//return $this->service->updateResource($book, $request->input('data.attributes'));
+//    }
+
+    public function update(JSONAPIRequest $request, Book $book)
+    {
+        return $this->service->updateResource($book, $request->input('data.attributes'), $request->input('data.relationships'));
     }
 
     /**
