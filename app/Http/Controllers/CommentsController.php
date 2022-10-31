@@ -50,7 +50,7 @@ class CommentsController extends Controller
      * @param \App\Models\Comment $comment
      * @return \App\Http\Resources\JSONAPIResource
      */
-    public function show($comment)
+    public function show(Comment $comment)
     {
         return $this->service->fetchResource(Comment::class, $comment, 'comments');
 

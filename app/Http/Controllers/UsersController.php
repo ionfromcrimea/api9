@@ -46,10 +46,10 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param \App\Models\User $user
      * @return \App\Http\Resources\JSONAPIResource
      */
-    public function show($user)
+    public function show(User $user)
     {
         return $this->service->fetchResource(User::class, $user, 'users');
     }

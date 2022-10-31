@@ -506,7 +506,7 @@ class UsersRelationshipsTest extends TestCase
                         "attributes" => [
                             'name' => $users[0]->name,
                             'email' => $users[0]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[0]->created_at->toJSON(),
                             'updated_at' => $users[0]->updated_at->toJSON(),
                         ],
@@ -545,7 +545,7 @@ class UsersRelationshipsTest extends TestCase
                         "attributes" => [
                             'name' => $users[1]->name,
                             'email' => $users[1]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[1]->created_at->toJSON(),
                             'updated_at' => $users[1]->updated_at->toJSON(),
                         ]
@@ -556,7 +556,7 @@ class UsersRelationshipsTest extends TestCase
                         "attributes" => [
                             'name' => $users[2]->name,
                             'email' => $users[2]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[2]->created_at->toJSON(),
                             'updated_at' => $users[2]->updated_at->toJSON(),
                         ]

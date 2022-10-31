@@ -67,7 +67,7 @@ class CommentsRelationshipsTest extends TestCase
                         "attributes" => [
                             'name' => $user->name,
                             'email' => $user->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $user->created_at->toJSON(),
                             'updated_at' => $user->updated_at->toJSON(),
                         ]
@@ -219,7 +219,7 @@ class CommentsRelationshipsTest extends TestCase
                         "attributes" => [
                             'name' => $user->name,
                             'email' => $user->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $user->created_at->toJSON(),
                             'updated_at' => $user->updated_at->toJSON(),
                         ]
@@ -608,7 +608,7 @@ class CommentsRelationshipsTest extends TestCase
                     "attributes" => [
                         'name' => $user->name,
                         'email' => $user->email,
-                        'role' => 'user',
+                        'role' => 'admin',
                         'created_at' => $user->created_at->toJSON(),
                         'updated_at' => $user->updated_at->toJSON(),
                     ]
@@ -842,7 +842,7 @@ class CommentsRelationshipsTest extends TestCase
                         "attributes" => [
                             'name' => $user->name,
                             'email' => $user->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $user->created_at->toJSON(),
                             'updated_at' => $user->updated_at->toJSON(),
                         ]
@@ -1044,7 +1044,7 @@ class CommentsRelationshipsTest extends TestCase
                         "attributes" => [
                             'name' => $user->name,
                             'email' => $user->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $user->created_at->toJSON(),
                             'updated_at' => $user->updated_at->toJSON(),
                         ]
@@ -1069,7 +1069,7 @@ class CommentsRelationshipsTest extends TestCase
                         "attributes" => [
                             'name' => $user->name,
                             'email' => $user->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $user->created_at->toJSON(),
                             'updated_at' => $user->updated_at->toJSON(),
                         ]
@@ -1091,7 +1091,7 @@ class CommentsRelationshipsTest extends TestCase
                         "attributes" => [
                             'name' => $user->name,
                             'email' => $user->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $user->created_at->toJSON(),
                             'updated_at' => $user->updated_at->toJSON(),
                         ]
@@ -1113,7 +1113,7 @@ class CommentsRelationshipsTest extends TestCase
                         "attributes" => [
                             'name' => $user->name,
                             'email' => $user->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $user->created_at->toJSON(),
                             'updated_at' => $user->updated_at->toJSON(),
                         ]

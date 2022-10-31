@@ -70,7 +70,7 @@ class AuthorsController extends Controller
      * @return JSONAPIResource
      */
 //    public function show(Author $author)
-    public function show($author)
+    public function show(Author $author)
     {
 //        return new AuthorsResource($author);
 //        return new JSONAPIResource($author);

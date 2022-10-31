@@ -28,6 +28,7 @@ class UsersTest extends TestCase
     public function it_has_a_role_of_user_by_default()
     {
         $user = User::factory()->create();
-        $this->assertEquals('user', $user->role);
+//        $this->assertEquals('user', $user->role);
+        $this->assertEquals('admin', $user->role);
     }
 }

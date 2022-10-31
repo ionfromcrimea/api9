@@ -16,11 +16,17 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class BooksController extends Controller
 {
+//    protected function resourceMethodsWithoutModels()
+//    {
+//        return ['index', 'create', 'store', 'show'];
+//    }
+
     private $service;
 
     public function __construct(JSONAPIService $service)
     {
         $this->service = $service;
+        $this->authorizeResource(Book::class, 'book');
     }
 
     /**
@@ -84,7 +90,7 @@ class BooksController extends Controller
      * @return JSONAPIResource
      */
 //    public function show(Book $book)
-    public function show($book)
+    public function show(Book $book)
     {
 //        $query = QueryBuilder::for(Book::where('id', $book))
 //            ->allowedIncludes('authors')

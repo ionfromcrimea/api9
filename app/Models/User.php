@@ -45,7 +45,8 @@ class User extends Authenticatable
     ];
 
     protected $attributes = [
-        'role' => 'user',
+//        'role' => 'user',
+        'role' => 'admin',
     ];
 
     public $incrementing = false;

@@ -61,7 +61,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[0]->name,
                             'email' => $users[0]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[0]->created_at->toJSON(),
                             'updated_at' => $users[0]->updated_at->toJSON(),
                         ]
@@ -72,7 +72,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[1]->name,
                             'email' => $users[1]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[1]->created_at->toJSON(),
                             'updated_at' => $users[1]->updated_at->toJSON(),
                         ]
@@ -83,7 +83,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[2]->name,
                             'email' => $users[2]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[2]->created_at->toJSON(),
                             'updated_at' => $users[2]->updated_at->toJSON(),
                         ]
@@ -118,7 +118,7 @@ class UsersTest extends TestCase
                     "attributes" => [
                         'name' => 'John Doe',
                         'email' => 'john@example.com',
-                        'role' => 'user',
+                        'role' => 'admin',
                         'created_at' => now()->setMilliseconds(0)->toJSON(),
                         'updated_at' => now()->setMilliseconds(0)->toJSON(),
                     ]
@@ -127,7 +127,7 @@ class UsersTest extends TestCase
         $this->assertDatabaseHas('users', [
             'name' => 'John Doe',
             'email' => 'john@example.com',
-            'role' => 'user',
+            'role' => 'admin',
         ]);
         $this->assertTrue(Hash::check('secret', User::whereName('John Doe')->first()->password));
     }
@@ -884,7 +884,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[0]->name,
                             'email' => $users[0]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[0]->created_at->toJSON(),
                             'updated_at' => $users[0]->updated_at->toJSON(),
                         ]
@@ -895,7 +895,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[1]->name,
                             'email' => $users[1]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[1]->created_at->toJSON(),
                             'updated_at' => $users[1]->updated_at->toJSON(),
                         ]
@@ -906,7 +906,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[2]->name,
                             'email' => $users[2]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[2]->created_at->toJSON(),
                             'updated_at' => $users[2]->updated_at->toJSON(),
                         ]
@@ -946,7 +946,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[0]->name,
                             'email' => $users[0]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[0]->created_at->toJSON(),
                             'updated_at' => $users[0]->updated_at->toJSON(),
                         ]
@@ -957,7 +957,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[1]->name,
                             'email' => $users[1]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[1]->created_at->toJSON(),
                             'updated_at' => $users[1]->updated_at->toJSON(),
                         ]
@@ -968,7 +968,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[2]->name,
                             'email' => $users[2]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[2]->created_at->toJSON(),
                             'updated_at' => $users[2]->updated_at->toJSON(),
                         ]
@@ -1013,7 +1013,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[1]->name,
                             'email' => $users[1]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[1]->created_at->toJSON(),
                             'updated_at' => $users[1]->updated_at->toJSON(),
                         ]
@@ -1024,7 +1024,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[0]->name,
                             'email' => $users[0]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[0]->created_at->toJSON(),
                             'updated_at' => $users[0]->updated_at->toJSON(),
                         ]
@@ -1035,7 +1035,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[2]->name,
                             'email' => $users[2]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[2]->created_at->toJSON(),
                             'updated_at' => $users[2]->updated_at->toJSON(),
                         ]
@@ -1080,7 +1080,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[2]->name,
                             'email' => $users[2]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[2]->created_at->toJSON(),
                             'updated_at' => $users[2]->updated_at->toJSON(),
                         ]
@@ -1091,7 +1091,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[1]->name,
                             'email' => $users[1]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[1]->created_at->toJSON(),
                             'updated_at' => $users[1]->updated_at->toJSON(),
                         ]
@@ -1102,7 +1102,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[0]->name,
                             'email' => $users[0]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[0]->created_at->toJSON(),
                             'updated_at' => $users[0]->updated_at->toJSON(),
                         ]
@@ -1136,7 +1136,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[0]->name,
                             'email' => $users[0]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[0]->created_at->toJSON(),
                             'updated_at' => $users[0]->updated_at->toJSON(),
                         ]
@@ -1147,7 +1147,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[1]->name,
                             'email' => $users[1]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[1]->created_at->toJSON(),
                             'updated_at' => $users[1]->updated_at->toJSON(),
                         ]
@@ -1158,7 +1158,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[2]->name,
                             'email' => $users[2]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[2]->created_at->toJSON(),
                             'updated_at' => $users[2]->updated_at->toJSON(),
                         ]
@@ -1198,7 +1198,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[3]->name,
                             'email' => $users[3]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[3]->created_at->toJSON(),
                             'updated_at' => $users[3]->updated_at->toJSON(),
                         ]
@@ -1209,7 +1209,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[4]->name,
                             'email' => $users[4]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[4]->created_at->toJSON(),
                             'updated_at' => $users[4]->updated_at->toJSON(),
                         ]
@@ -1220,7 +1220,7 @@ class UsersTest extends TestCase
                         "attributes" => [
                             'name' => $users[5]->name,
                             'email' => $users[5]->email,
-                            'role' => 'user',
+                            'role' => 'admin',
                             'created_at' => $users[5]->created_at->toJSON(),
                             'updated_at' => $users[5]->updated_at->toJSON(),
                         ]
@@ -1233,5 +1233,152 @@ class UsersTest extends TestCase
                     'next' => null
                 ]
             ]);
+    }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function it_can_filter_administrators_by_role()
+    {
+        $this->withoutExceptionHandling();
+
+        $users = User::factory(3)->create();
+        $users = $users->sortBy(function ($item) {
+            return $item->id;
+        })->values();
+        $users->first()->role = 'admin';
+        $users->first()->save();
+        $users[1]->role = 'user';
+        $users[1]->save();
+        $users[2]->role = 'user';
+        $users[2]->save();
+        $this->actingAs($users->first(), 'sanctum');
+        $this->getJson("/api/v1/users?filter[role]=admin", [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])->assertStatus(200)
+            ->assertJson([
+                "data" => [
+                    [
+                        "id" => $users[0]->id,
+                        "type" => "users",
+                        "attributes" => [
+                            'name' => $users[0]->name,
+                            'email' => $users[0]->email,
+                            'role' => 'admin',
+                            'created_at' => $users[0]->created_at->toJSON(),
+                            'updated_at' => $users[0]->updated_at->toJSON(),
+                        ]
+                    ],
+                ]
+            ])
+            ->assertJsonMissing([
+                "data" => [
+                    "id" => $users[1]->id,
+                    "type" => "users",
+                    "attributes" => [
+                        'name' => $users[1]->name,
+                        'email' => $users[1]->email,
+                        'role' => 'admin',
+                        'created_at' => $users[1]->created_at->toJSON(),
+                        'updated_at' => $users[1]->updated_at->toJSON(),
+                    ]
+                ]
+            ])->assertJsonMissing([
+                "id" => $users[2]->id,
+                "attributes" => [
+                    'name' => $users[2]->name,
+                    'email' => $users[2]->email,
+                    'role' => 'admin',
+                    'created_at' => $users[2]->created_at->toJSON(),
+                    'updated_at' => $users[2]->updated_at->toJSON(),
+                ]
+            ]);
+    }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function it_can_filter_users_by_role()
+    {
+        $users = User::factory(3)->create();
+        $users = $users->sortBy(function ($item) {
+            return $item->id;
+        })->values();
+        $users->first()->role = 'admin';
+        $users->first()->save();
+        $users[1]->role = 'user';
+        $users[1]->save();
+        $users[2]->role = 'user';
+        $users[2]->save();
+        $this->actingAs($users->first(), 'sanctum');
+        $this->getJson("/api/v1/users?filter[role]=user", [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])->assertStatus(200)
+            ->assertJson([
+                "data" => [
+                    [
+                        "id" => $users[1]->id,
+                        "type" => "users",
+                        "attributes" => [
+                            'name' => $users[1]->name,
+                            'email' => $users[1]->email,
+                            'role' => 'user',
+                            'created_at' => $users[1]->created_at->toJSON(),
+                            'updated_at' => $users[1]->updated_at->toJSON(),
+                        ]
+                    ],
+                    [
+                        "id" => $users[2]->id,
+                        "type" => "users",
+                        "attributes" => [
+                            'name' => $users[2]->name,
+                            'email' => $users[2]->email,
+                            'role' => 'user',
+                            'created_at' => $users[2]->created_at->toJSON(),
+                            'updated_at' => $users[2]->updated_at->toJSON(),
+                        ]
+                    ]
+                ]
+            ])
+            ->assertJsonMissing([
+                "id" => $users[0]->id,
+                "attributes" => [
+                    'name' => $users[0]->name,
+                    'email' => $users[0]->email,
+                    'role' => 'admin',
+                    'created_at' => $users[0]->created_at->toJSON(),
+                    'updated_at' => $users[0]->updated_at->toJSON(),
+                ]
+            ]);
+    }
+
+    /**
+     * @test
+     * @watch
+     */
+    public function it_cannot_fetch_a_resource_with_a_role_that_does_not_exist()
+    {
+        $users = User::factory(3)->create();
+        $users = $users->sortBy(function ($item) {
+            return $item->id;
+        })->values();
+        $users->first()->role = 'admin';
+        $users->first()->save();
+        $this->actingAs($users->first(), 'sanctum');
+        $this->getJson("/api/v1/users?filter[foo]=bar", [
+            'accept' => 'application/vnd.api+json',
+            'content-type' => 'application/vnd.api+json',
+        ])->assertStatus(400)->assertJson([
+            'errors' => [
+                [
+                    'title' => 'Invalid Filter Query',
+                    'details' => 'Requested filter(s) `foo` are not allowed. Allowed filter(s) are `role`.'
+                ]
+            ]
+        ]);
     }
 }

@@ -1497,8 +1497,8 @@ class BooksRelationshipsTest extends TestCase
                         'title' => 'Building an API with Laravel',
                         'description' => 'A book about API development',
                         'publication_year' => '2019',
-                        'created_at' => now()->setMilliseconds(0)->toJSON(),
-                        'updated_at' => now()->setMilliseconds(0)->toJSON(),
+//                        'created_at' => now()->setMilliseconds(0)->toJSON(),
+//                        'updated_at' => now()->setMilliseconds(0)->toJSON(),
                     ],
                     'relationships' => [
                         'authors' => [

@@ -16,8 +16,11 @@ class BooksTest extends TestCase
      */
     public function it_returns_an_book_as_a_resource_object()
     {
+  $this->withoutExceptionHandling();
+
         $book = Book::factory()->create();
         $user = User::factory()->create();
+//        dd($user);
         $this->actingAs($user, 'sanctum');
         $this->getJson('/api/v1/books/1', [
             'accept' => 'application/vnd.api+json',

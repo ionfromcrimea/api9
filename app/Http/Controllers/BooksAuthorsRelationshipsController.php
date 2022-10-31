@@ -8,7 +8,9 @@ use App\Http\Resources\AuthorsIdentifierResource;
 use App\Http\Resources\JSONAPIIdentifierResource;
 use App\Models\Book;
 use App\Services\JSONAPIService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class BooksAuthorsRelationshipsController extends Controller
 {
@@ -32,6 +34,9 @@ class BooksAuthorsRelationshipsController extends Controller
 //        $ids = $request->input('data.*.id');
 //        $book->authors()->sync($ids);
 //        return response(null, 204);
+        if(Gate::denies('admin-only')){
+            throw new AuthorizationException('This action is unauthorized.');
+        }
         return $this->service
             ->updateManyToManyRelationships($book, 'authors', $request->input('data.*.id'));
     }

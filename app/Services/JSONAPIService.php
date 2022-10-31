@@ -18,12 +18,12 @@ class JSONAPIService
 //    {
 //        return new JSONAPIResource($model);
 //    }
-    public function fetchResource($model, $id = 0, $type = '')
+    public function fetchResource($model, $modelInstance, $type)
     {
-        if ($model instanceof Model) {
-            return new JSONAPIResource($model);
-        }
-        $query = QueryBuilder::for($model::where('id', $id))
+//        if ($model instanceof Model) {
+//            return new JSONAPIResource($model);
+//        }
+        $query = QueryBuilder::for($model::where('id', $modelInstance->id))
             ->allowedIncludes(config("jsonapi.resources.{$type}.allowedIncludes"))
             ->firstOrFail();
         return new JSONAPIResource($query);
@@ -41,6 +41,7 @@ class JSONAPIService
         $models = QueryBuilder::for($modelClass)
             ->allowedSorts(config("jsonapi.resources.{$type}.allowedSorts"))
             ->allowedIncludes(config("jsonapi.resources.{$type}.allowedIncludes"))
+            ->allowedFilters(config("jsonapi.resources.{$type}.allowedFilters"))
             ->jsonPaginate();
         return new JSONAPICollection($models);
     }
@@ -81,13 +82,13 @@ class JSONAPIService
 //        $model->load(array_keys($relationships));
 //    }
 
-    protected function handleRelationship(array $relationships, $model) : void
+    protected function handleRelationship(array $relationships, $model): void
     {
         foreach ($relationships as $relationshipName => $contents) {
             if ($model->$relationshipName() instanceof BelongsTo) {
                 $this->updateToOneRelationship($model, $relationshipName, $contents['data']['id']);
             }
-            if($model->$relationshipName() instanceof BelongsToMany){
+            if ($model->$relationshipName() instanceof BelongsToMany) {
                 $this->updateManyToManyRelationships($model, $relationshipName, collect($contents['data'])->pluck('id'));
             }
         }
