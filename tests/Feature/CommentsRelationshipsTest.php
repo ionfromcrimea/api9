@@ -1321,8 +1321,8 @@ class CommentsRelationshipsTest extends TestCase
                     "type" => 'comments',
                     "attributes" => [
                         'message' => 'Hello world',
-                        'created_at' => now()->setMilliseconds(0)->toJSON(),
-                        'updated_at' => now()->setMilliseconds(0)->toJSON(),
+//                        'created_at' => now()->setMilliseconds(0)->toJSON(),
+//                        'updated_at' => now()->setMilliseconds(0)->toJSON(),
                     ],
                     'relationships' => [
                         'books' => [

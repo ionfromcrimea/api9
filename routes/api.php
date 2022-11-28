@@ -48,7 +48,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::get('users/{user}/relationships/comments', '\App\Http\Controllers\UsersCommentsRelationshipsController@index')
         ->name('users.relationships.comments');
     Route::patch('users/{user}/relationships/comments', '\App\Http\Controllers\UsersCommentsRelationshipsController@update')
-        ->name('users.relationships.comments');
+        ->name('users.relationships.comments.patch');
     Route::get('users/{user}/comments', '\App\Http\Controllers\UsersCommentsRelatedController@index')
         ->name('users.comments');
 
@@ -60,7 +60,7 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::get('authors/{author}/relationships/books', '\App\Http\Controllers\AuthorsBooksRelationshipsController@index')
         ->name('authors.relationships.books');
     Route::patch('authors/{author}/relationships/books', '\App\Http\Controllers\AuthorsBooksRelationshipsController@update')
-        ->name('authors.relationships.books');
+        ->name('authors.relationships.books.patch');
     Route::get('authors/{author}/books', '\App\Http\Controllers\AuthorsBooksRelatedController@index')
         ->name('authors.books');
 
@@ -70,14 +70,14 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::get('books/{book}/relationships/authors', '\App\Http\Controllers\BooksAuthorsRelationshipsController@index')
         ->name('books.relationships.authors');
     Route::patch('books/{book}/relationships/authors', '\App\Http\Controllers\BooksAuthorsRelationshipsController@update')
-        ->name('books.relationships.authors');
+        ->name('books.relationships.authors.patch');
     Route::get('books/{book}/authors', '\App\Http\Controllers\BooksAuthorsRelatedController@index')
         ->name('books.authors');
 
     Route::get('books/{book}/relationships/comments', '\App\Http\Controllers\BooksCommentsRelationshipsController@index')
         ->name('books.relationships.comments');
     Route::patch('books/{book}/relationships/comments', '\App\Http\Controllers\BooksCommentsRelationshipsController@update')
-        ->name('books.relationships.comments');
+        ->name('books.relationships.comments.patch');
     Route::get('books/{book}/comments', '\App\Http\Controllers\BooksCommentsRelatedController@index')
         ->name('books.comments');
 
@@ -87,14 +87,14 @@ Route::middleware('auth:sanctum')->prefix('v1')->group(function () {
     Route::get('comments/{comment}/relationships/users', '\App\Http\Controllers\CommentsUsersRelationshipsController@index')
         ->name('comments.relationships.users');
     Route::patch('comments/{comment}/relationships/users', '\App\Http\Controllers\CommentsUsersRelationshipsController@update')
-        ->name('comments.relationships.users');
+        ->name('comments.relationships.users.patch');
     Route::get('comments/{comment}/users', '\App\Http\Controllers\CommentsUsersRelatedController@index')
         ->name('comments.users');
 
     Route::get('comments/{comment}/relationships/books', '\App\Http\Controllers\CommentsBooksRelationshipsController@index')
         ->name('comments.relationships.books');
     Route::patch('comments/{comment}/relationships/books', '\App\Http\Controllers\CommentsBooksRelationshipsController@update')
-        ->name('comments.relationships.books');
+        ->name('comments.relationships.books.patch');
     Route::get('comments/{comment}/books', '\App\Http\Controllers\CommentsBooksRelatedController@index')
         ->name('comments.books');
 });
